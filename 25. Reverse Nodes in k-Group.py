@@ -1,34 +1,43 @@
 # 25. Reverse Nodes in k-Group
 # Definition for singly-linked list.
-from typing import Optional
+# from typing import Optional
 
-class ListNode:
-    def __init__(self, val=0, next=None):
-        self.val = val
-        self.next = next
+# class ListNode:
+#     def __init__(self, val=0, next=None):
+#         self.val = val
+#         self.next = next
+
+
 class Solution:
     def reverseKGroup(self, head: Optional[ListNode], k: int) -> Optional[ListNode]:
         cur = head
-        l = []
-        dummy = subhead = ListNode()
+        i = 0
+        dummy = tail = ListNode(0, head)
+        subhead = head
         while cur:
-            l.append(cur)
-            if not len(l) % k:
-                tmp = cur.next
-                subhead.next = cur
-                subhead = l[0]
-                for i in range(len(l) - 1, 0, -1):
-                    l[i].next = l[i - 1]
-                cur = tmp
-                l = []
+            i += 1
+            if i == k: 
+                prev = tmp = cur.next
+                while subhead != tmp:
+                    tmp1 = subhead.next
+                    subhead.next = prev
+                    prev = subhead
+                    subhead = tmp1
+                next_tail = tail.next
+                tail.next = prev
+                tail = next_tail
+                cur = subhead
+                i = 0
             else:
                 cur = cur.next
-        if l:
-            subhead.next = l[0]
         
         return dummy.next
          
-head = ListNode(1)
-head.next = ListNode(2)
-s = Solution()
-s.reverseKGroup(head, 2)
+# head = ListNode(0)
+# cur = head
+# for i in range(1, 6): 
+#     node = ListNode(i)
+#     cur.next = node
+#     cur = cur.next
+# s = Solution()
+# s.reverseKGroup(head.next, 2)
