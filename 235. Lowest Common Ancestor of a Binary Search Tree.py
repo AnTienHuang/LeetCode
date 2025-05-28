@@ -16,9 +16,19 @@ class Solution:
             
             if self.in_tree(root, p) and self.in_tree(root, q): 
                 stack.append(root)
-            dfs(root.left, p, q)
-            dfs(root.right, p, q)
 
+            if (p.val == root.val or 
+                q.val == root.val or 
+                (p.val < root.val and q.val > root.val)
+            ):
+                return
+            if p.val < root.val:
+                dfs(root.left, p, q)
+            else:
+                dfs(root.right, p, q)
+                
+        if p.val > q.val:
+            p, q = q, p
         dfs(root, p, q)        
         return stack[-1]
     
