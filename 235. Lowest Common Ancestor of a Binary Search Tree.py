@@ -8,33 +8,48 @@
 
 class Solution:
     def lowestCommonAncestor(self, root: 'TreeNode', p: 'TreeNode', q: 'TreeNode') -> 'TreeNode':
-        stack = []
-        
-        def dfs(root, p, q):
-            if not root:
-                return
-            
-            if self.in_tree(root, p) and self.in_tree(root, q): 
-                stack.append(root)
-
-            if (p.val == root.val or 
-                q.val == root.val or 
-                (p.val < root.val and q.val > root.val)
-            ):
-                return
-            if p.val < root.val:
-                dfs(root.left, p, q)
-            else:
-                dfs(root.right, p, q)
-                
+        # 2nd attempt:
         if p.val > q.val:
             p, q = q, p
-        dfs(root, p, q)        
-        return stack[-1]
+        cur = root
+        while cur:
+            if ((cur.val > p.val and cur.val < q.val) or 
+                cur.val == p.val or cur.val == q.val
+            ):
+                return cur
+            elif cur.val > q.val:
+                cur = cur.left
+            else:
+                cur = cur.right 
+
+        # 1st attempt:
+    #     stack = []
+        
+    #     def dfs(root, p, q):
+    #         if not root:
+    #             return
+            
+    #         if self.in_tree(root, p) and self.in_tree(root, q): 
+    #             stack.append(root)
+
+    #         if (p.val == root.val or 
+    #             q.val == root.val or 
+    #             (p.val < root.val and q.val > root.val)
+    #         ):
+    #             return
+    #         if p.val < root.val:
+    #             dfs(root.left, p, q)
+    #         else:
+    #             dfs(root.right, p, q)
+                
+    #     if p.val > q.val:
+    #         p, q = q, p
+    #     dfs(root, p, q)        
+    #     return stack[-1]
     
-    def in_tree(self, root, node):
-        if not root:
-            return False
-        if root.val == node.val:
-            return True
-        return self.in_tree(root.left, node) or self.in_tree(root.right, node)
+    # def in_tree(self, root, node):
+    #     if not root:
+    #         return False
+    #     if root.val == node.val:
+    #         return True
+    #     return self.in_tree(root.left, node) or self.in_tree(root.right, node)
